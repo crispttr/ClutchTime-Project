@@ -12,3 +12,4 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('chapters', ChapterController::class);
     Route::apiResource('choices', ChoiceController::class);
 });
+require __DIR__.'/auth.php';
