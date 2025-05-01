@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import StoryList from '../components/StoryList.vue'
 import InteractiveStory from '../components/InteractiveStory.vue'
+import Register from '../components/auth/Register.vue'
+import Login from '../components/auth/Login.vue'
+import Profile from '../components/auth/Profile.vue'
 
 const routes = [
   {
@@ -12,6 +15,21 @@ const routes = [
     path: '/story/:id',
     name: 'story',
     component: InteractiveStory,
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: Register,
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile,
   },
 ]
 
