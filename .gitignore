@@ -1,0 +1,16 @@
+# Laravel (backend)
+backend-clutchTime/vendor/
+backend-clutchTime/.env
+backend-clutchTime/storage/
+backend-clutchTime/node_modules/
+
+# Vue (frontend)
+frontend-clutchTime/node_modules/
+frontend-clutchTime/dist/
+
+# IDE & system
+.DS_Store
+*.log
+.env.*
+.idea/
+.vscode/
