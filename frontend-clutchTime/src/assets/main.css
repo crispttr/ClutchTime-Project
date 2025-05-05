@@ -31,5 +31,21 @@ a,
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
+
+    /* styles.css */
+    .btn {
+      background-color: #1a73e8;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: #155ab6;
+    }
   }
 }
