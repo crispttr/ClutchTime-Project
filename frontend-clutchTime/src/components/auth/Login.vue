@@ -15,23 +15,36 @@ import { ref } from 'vue'
 import api from '../../axios'
 import { useRouter } from 'vue-router'
 
-const router = useRouter()
 const email = ref('')
 const password = ref('')
 const error = ref('')
+const router = useRouter()
 
 const login = async () => {
   try {
     await api.get('/sanctum/csrf-cookie')
-    await api.post('/api/login', {
-      email: email.value,
-      password: password.value,
-    })
-    const res = await api.get('/api/user')
-    console.log('Connecté :', res.data)
-    router.push('/profile')
+
+    const xsrfToken = decodeURIComponent(
+      document.cookie
+        .split('; ')
+        .find((row) => row.startsWith('XSRF-TOKEN='))
+        ?.split('=')[1] || '',
+    )
+
+    await api.post(
+      '/api/login',
+      {
+        email: email.value,
+        password: password.value,
+      },
+      {
+        headers: { 'X-XSRF-TOKEN': xsrfToken },
+      },
+    )
+
+    router.push('/welcome')
   } catch (err) {
-    error.value = err.response?.data?.message || 'Identifiants incorrects'
+    error.value = err.response?.data?.message || 'Erreur de connexion'
   }
 }
 </script>

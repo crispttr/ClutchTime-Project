@@ -2,20 +2,16 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Story;
 
 class StorySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        \App\Models\Story::create([
-            'title' => 'La montée vers la gloire',
-            'description' => 'Tu es un jeune joueur en pleine ascension. Ton destin dépend de tes choix.',
+        Story::create([
+            'title' => "Clutch Time – L'ascension de Malik",
+            'description' => "Tu es Malik, jeune espoir du basket. Chaque choix façonne ta carrière entre gloire, blessures et rivalités."
         ]);
     }
-    
 }

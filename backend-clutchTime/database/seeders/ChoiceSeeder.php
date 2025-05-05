@@ -2,34 +2,42 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Choice;
 
 class ChoiceSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $chapters = \App\Models\Chapter::all();
-    
-        \App\Models\Choice::insert([
+        Choice::insert([
             [
-                'chapter_id' => $chapters[0]->id,
-                'text' => 'Tenter un tir risqué',
-                'next_chapter_id' => $chapters[1]->id,
+                'chapter_id' => 1,
+                'text' => 'Accepter de débuter sur le banc',
+                'next_chapter_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'chapter_id' => $chapters[0]->id,
-                'text' => 'Passer la balle',
-                'next_chapter_id' => null, // fin ouverte
+                'chapter_id' => 1,
+                'text' => 'Insister pour jouer titulaire',
+                'next_chapter_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'chapter_id' => 3,
+                'text' => 'Tenter un tir risqué',
+                'next_chapter_id' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'chapter_id' => 3,
+                'text' => 'Faire une passe à ton ailier',
+                'next_chapter_id' => 5,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ]);
     }
-    
 }

@@ -7,9 +7,17 @@ use App\Http\Controllers\Api\V1\StoryController;
 use App\Http\Controllers\Api\V1\ChapterController;
 use App\Http\Controllers\Api\V1\ChoiceController;
 
+use App\Http\Controllers\Api\WelcomeMessageController;
+
 Route::prefix('v1')->group(function () {
     Route::apiResource('stories', StoryController::class);
     Route::apiResource('chapters', ChapterController::class);
     Route::apiResource('choices', ChoiceController::class);
 });
 require __DIR__.'/auth.php';
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+
+Route::middleware('auth:sanctum')->get('/welcome-message', WelcomeMessageController::class);

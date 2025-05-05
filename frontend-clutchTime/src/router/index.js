@@ -4,6 +4,7 @@ import InteractiveStory from '../components/InteractiveStory.vue'
 import Register from '../components/auth/Register.vue'
 import Login from '../components/auth/Login.vue'
 import Profile from '../components/auth/Profile.vue'
+import Welcome from '../components/Welcome.vue'
 
 const routes = [
   {
@@ -31,6 +32,7 @@ const routes = [
     name: 'profile',
     component: Profile,
   },
+  { path: '/welcome', component: Welcome },
 ]
 
 const router = createRouter({
