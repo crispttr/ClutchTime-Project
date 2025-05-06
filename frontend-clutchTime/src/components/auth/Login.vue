@@ -27,18 +27,12 @@ const router = useRouter()
 const login = async () => {
   try {
     await api.get('/sanctum/csrf-cookie')
-    const token = decodeURIComponent(
-      document.cookie
-        .split('; ')
-        .find((c) => c.startsWith('XSRF-TOKEN='))
-        ?.split('=')[1] || '',
-    )
-    await api.post(
-      '/api/login',
-      { email: email.value, password: password.value },
-      { headers: { 'X-XSRF-TOKEN': token } },
-    )
-    router.push('/story')
+    await api.post('/api/login', {
+      email: email.value,
+      password: password.value,
+    })
+
+    router.push('/') // redirection vers l'accueil
   } catch (err) {
     error.value = err.response?.data?.message || 'Erreur de connexion'
   }

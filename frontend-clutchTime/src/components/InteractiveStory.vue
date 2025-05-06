@@ -7,20 +7,17 @@
           <svg viewBox="0 0 36 36">
             <path
               class="bg"
-              d="M18 2.0845
-                 a 15.9155 15.9155 0 0 1 0 31.831
-                 a 15.9155 15.9155 0 0 1 0 -31.831"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             />
             <path
               class="progress"
               :stroke-dasharray="progress + ', 100'"
-              d="M18 2.0845
-                 a 15.9155 15.9155 0 0 1 0 31.831
-                 a 15.9155 15.9155 0 0 1 0 -31.831"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             />
             <text x="18" y="20.35" class="percentage">{{ progress }}%</text>
           </svg>
         </div>
+        <button class="home" @click="goHome">🏠 Accueil</button>
         <button @click="logout" class="logout">Logout</button>
         <p v-if="message" class="logout-message">{{ message }}</p>
       </div>
@@ -45,12 +42,18 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '@/axios'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
-const chapter = ref({ title: '', content: '', choices: [] })
+const route = useRoute()
+
+const chapter = ref({ title: '', content: '', choices: [], story_id: null })
 const userName = ref('')
-const progress = ref(4)
+const progress = ref(0)
+const message = ref('')
+
+const storyId = route.query.story || 1
+const chapterId = route.query.chapter || null
 
 const fetchUser = async () => {
   const res = await api.get('/api/user')
@@ -58,41 +61,71 @@ const fetchUser = async () => {
 }
 
 const fetchChapter = async (id = 1) => {
-  const res = await api.get(`/api/v1/chapters/${id}`)
-  chapter.value = res.data
+  try {
+    const res = await api.get(`/api/v1/chapters/${id}`)
+    chapter.value = res.data
+  } catch (err) {
+    console.error(`Erreur lors du chargement du chapitre ${id} :`, err)
+  }
 }
 
-const selectChoice = (nextId) => {
-  fetchChapter(nextId)
-  progress.value = Math.min(progress.value + 10, 100)
-}
+const selectChoice = async (nextId) => {
+  try {
+    if (!nextId) throw new Error('nextId est undefined')
 
-const message = ref('')
+    const res = await api.get(`/api/v1/chapters/${nextId}`)
+    chapter.value = res.data
+
+    // 🔐 Obtenir le cookie CSRF (à faire au moins une fois par session)
+    await api.get('/sanctum/csrf-cookie')
+
+    // 💾 Sauvegarde la progression
+    await api.post('/api/v1/progressions', {
+      story_id: chapter.value.story_id,
+      chapter_id: chapter.value.id,
+    })
+
+    progress.value = Math.min(progress.value + 10, 100)
+  } catch (err) {
+    console.error('Erreur lors de la sélection :', err)
+  }
+}
 
 const logout = async () => {
   try {
-    // Important : récupère le cookie CSRF AVANT
     await api.get('/sanctum/csrf-cookie')
-
-    // Ensuite : déconnexion
     await api.post('/api/logout')
-
-    // Affiche un message
     message.value = 'Vous êtes déconnecté.'
-
-    // Redirige après un court délai
-    setTimeout(() => {
-      router.replace('/login')
-    }, 1000)
+    setTimeout(() => router.replace('/login'), 1000)
   } catch (err) {
     console.error('Erreur lors de la déconnexion :', err)
     message.value = 'Erreur de déconnexion.'
   }
 }
 
-onMounted(() => {
-  fetchUser()
-  fetchChapter()
+const goHome = () => {
+  router.push('/')
+}
+
+onMounted(async () => {
+  try {
+    await fetchUser()
+
+    if (chapterId) {
+      await fetchChapter(chapterId)
+    } else {
+      const res = await api.get(`/api/v1/progressions/${storyId}`)
+      const saved = res.data
+      if (saved?.chapter_id) {
+        await fetchChapter(saved.chapter_id)
+      } else {
+        await fetchChapter(1)
+      }
+    }
+  } catch (err) {
+    console.error('Erreur de chargement initial :', err)
+    await fetchChapter(1)
+  }
 })
 </script>
 
@@ -122,13 +155,29 @@ onMounted(() => {
   gap: 1rem;
 }
 
-.logout {
+.logout,
+.home {
   padding: 0.5rem 1rem;
-  background: #e53935;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.logout {
+  background: #e53935;
+}
+
+.logout:hover {
+  background: #c62828;
+}
+
+.home {
+  background: #1976d2;
+}
+
+.home:hover {
+  background: #125ca1;
 }
 
 .progress-circle {
@@ -182,6 +231,7 @@ svg {
   border-radius: 6px;
   cursor: pointer;
 }
+
 .logout-message {
   color: #4caf50;
   font-weight: bold;

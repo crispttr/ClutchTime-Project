@@ -6,9 +6,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\StoryController;
 use App\Http\Controllers\Api\V1\ChapterController;
 use App\Http\Controllers\Api\V1\ChoiceController;
+use App\Http\Controllers\Api\V1\ProgressionController;
+
 
 use App\Http\Controllers\Api\WelcomeMessageController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+
 
 Route::prefix('v1')->group(function () {
     Route::apiResource('stories', StoryController::class);
@@ -20,6 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/v1/progressions/{story_id}', [ProgressionController::class, 'show']);
+    Route::post('/v1/progressions', [ProgressionController::class, 'store']);
+});
 
 Route::middleware('auth:sanctum')->get('/welcome-message', WelcomeMessageController::class);
 Route::middleware('auth:sanctum')->post('/logout', [AuthenticatedSessionController::class, 'destroy']);

@@ -2,16 +2,21 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../components/auth/Login.vue'
 import Register from '../components/auth/Register.vue'
 import InteractiveStory from '../components/InteractiveStory.vue'
+import Accueil from '../components/Accueil.vue'
 
 const routes = [
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   {
+    path: '/',
+    component: Accueil,
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/story',
     component: InteractiveStory,
     meta: { requiresAuth: true },
   },
-  { path: '/', redirect: '/login' },
 ]
 
 const router = createRouter({
@@ -19,7 +24,7 @@ const router = createRouter({
   routes,
 })
 
-// 🛡️ Middleware global
+// Middleware d'auth global
 router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.meta.requiresAuth
   if (requiresAuth) {
