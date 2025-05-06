@@ -1,22 +1,28 @@
 <template>
-  <div class="accueil">
-    <h2>📚 Histoires disponibles</h2>
-
-    <div v-if="stories.length" class="story-list">
-      <div v-for="story in stories" :key="story.id" class="story-card">
-        <h3>{{ story.title }}</h3>
-        <p>{{ story.description }}</p>
-
-        <div v-if="progressions[story.id]">
-          <button @click="goToStory(story.id, progressions[story.id])">▶️ Reprendre</button>
-          <button class="secondary" @click="resetProgression(story.id)">🔁 Recommencer</button>
-        </div>
-
-        <button v-else @click="startStory(story.id)">Commencer</button>
-      </div>
+  <div class="page-container">
+    <div class="top-bar">
+      <div class="greeting">👋 Hello, {{ userName }}</div>
     </div>
 
-    <p v-else>Chargement des histoires...</p>
+    <div class="accueil">
+      <h2>📚 Histoires disponibles</h2>
+
+      <div v-if="stories.length" class="story-list">
+        <div v-for="story in stories" :key="story.id" class="story-card">
+          <h3>{{ story.title }}</h3>
+          <p>{{ story.description }}</p>
+
+          <div v-if="progressions[story.id]">
+            <button @click="goToStory(story.id, progressions[story.id])">▶️ Reprendre</button>
+            <button class="secondary" @click="resetProgression(story.id)">🔁 Recommencer</button>
+          </div>
+
+          <button v-else @click="startStory(story.id)">Commencer</button>
+        </div>
+      </div>
+
+      <p v-else>Chargement des histoires...</p>
+    </div>
   </div>
 </template>
 
@@ -27,7 +33,13 @@ import api from '@/axios'
 
 const router = useRouter()
 const stories = ref([])
-const progressions = ref({}) // { story_id: chapter_id }
+const progressions = ref({})
+const userName = ref('')
+
+const fetchUser = async () => {
+  const res = await api.get('/api/user')
+  userName.value = res.data.name
+}
 
 const fetchStories = async () => {
   const res = await api.get('/api/v1/stories')
@@ -41,9 +53,7 @@ const fetchProgressions = async () => {
       if (res.data?.chapter_id) {
         progressions.value[story.id] = res.data.chapter_id
       }
-    } catch (err) {
-      // Aucune progression = pas grave
-    }
+    } catch {}
   }
 }
 
@@ -65,15 +75,28 @@ const resetProgression = async (storyId) => {
 }
 
 onMounted(async () => {
+  await fetchUser()
   await fetchStories()
   await fetchProgressions()
 })
 </script>
 
 <style scoped>
+.page-container {
+  padding: 1rem;
+}
+
+.top-bar {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
 .accueil {
   max-width: 900px;
-  margin: 0 auto;
+  margin: 5rem auto 0;
   padding: 2rem;
 }
 
