@@ -31,3 +31,4 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->get('/welcome-message', WelcomeMessageController::class);
 Route::middleware('auth:sanctum')->post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
+Route::delete('/v1/progressions/{story_id}', [ProgressionController::class, 'destroy']);

@@ -56,5 +56,25 @@ class ProgressionController extends Controller
     return response()->json($progression, 200, ['Content-Type' => 'application/json']);
 }
 
-    
+public function destroy(Request $request, $story_id)
+{
+    $user = $request->user();
+
+    if (!$user) {
+        return response()->json(['message' => 'Non authentifié'], 401);
+    }
+
+    $progression = Progression::where('user_id', $user->id)
+        ->where('story_id', $story_id)
+        ->first();
+
+    if (!$progression) {
+        return response()->json(['message' => 'Aucune progression à supprimer'], 404);
+    }
+
+    $progression->delete();
+
+    return response()->json(['message' => 'Progression supprimée'], 200);
+}
+
 }
