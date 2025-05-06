@@ -20,4 +20,9 @@ class Chapter extends Model
     {
         return $this->hasMany(Choice::class);
     }
+    public function availableChoices()
+{
+    return $this->choices()->whereNotNull('next_chapter_id');
+}
+
 }

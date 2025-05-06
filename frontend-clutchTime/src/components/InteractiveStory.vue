@@ -71,14 +71,22 @@ const message = ref('')
 
 const logout = async () => {
   try {
-    await api.get('/sanctum/csrf-cookie') // indispensable
+    // Important : récupère le cookie CSRF AVANT
+    await api.get('/sanctum/csrf-cookie')
+
+    // Ensuite : déconnexion
     await api.post('/api/logout')
+
+    // Affiche un message
     message.value = 'Vous êtes déconnecté.'
+
+    // Redirige après un court délai
     setTimeout(() => {
       router.replace('/login')
-    }, 1500)
-  } catch (error) {
-    console.error('Erreur lors de la déconnexion :', error)
+    }, 1000)
+  } catch (err) {
+    console.error('Erreur lors de la déconnexion :', err)
+    message.value = 'Erreur de déconnexion.'
   }
 }
 

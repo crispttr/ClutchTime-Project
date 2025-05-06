@@ -15,4 +15,9 @@ class Story extends Model
     {
         return $this->hasMany(Chapter::class);
     }
+    public function progressions()
+{
+    return $this->hasMany(UserProgress::class);
+}
+
 }
