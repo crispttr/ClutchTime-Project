@@ -13,7 +13,11 @@
       />
       <button type="submit">S'inscrire</button>
     </form>
-    <p v-if="error" class="error">{{ error }}</p>
+
+    <!-- Affichage des erreurs -->
+    <div v-if="errors.length" class="error-messages">
+      <p v-for="(error, index) in errors" :key="index" class="error">{{ error }}</p>
+    </div>
   </div>
 </template>
 
@@ -26,10 +30,11 @@ const name = ref('')
 const email = ref('')
 const password = ref('')
 const passwordConfirmation = ref('')
-const error = ref('')
+const errors = ref([])
 const router = useRouter()
 
 const register = async () => {
+  errors.value = []
   try {
     await api.get('/sanctum/csrf-cookie')
     const token = decodeURIComponent(
@@ -38,6 +43,7 @@ const register = async () => {
         .find((c) => c.startsWith('XSRF-TOKEN='))
         ?.split('=')[1] || '',
     )
+
     await api.post(
       '/api/register',
       {
@@ -52,7 +58,11 @@ const register = async () => {
     )
     router.push('/story')
   } catch (err) {
-    error.value = err.response?.data?.message || 'Erreur lors de l’inscription'
+    if (err.response && err.response.data.errors) {
+      errors.value = Object.values(err.response.data.errors).flat()
+    } else {
+      errors.value = ['Erreur lors de l’inscription']
+    }
   }
 }
 </script>
@@ -73,8 +83,12 @@ button {
   margin-bottom: 1rem;
   padding: 0.5rem;
 }
+.error-messages {
+  color: #ffc72c;
+  margin-top: 10px;
+}
 .error {
-  color: red;
+  margin: 4px 0;
   font-weight: bold;
 }
 </style>
