@@ -1,7 +1,9 @@
 <template>
   <div class="page-container">
     <div class="top-bar">
-      <div class="greeting">👋 Hello, {{ userName }}</div>
+      <div class="greeting">👋 Bonjour, {{ userName }}</div>
+      <button @click="logout" class="logout">Déconnexion</button>
+      <p v-if="message" class="logout-message">{{ message }}</p>
     </div>
 
     <div class="accueil">
@@ -12,12 +14,16 @@
           <h3>{{ story.title }}</h3>
           <p>{{ story.description }}</p>
 
-          <div v-if="progressions[story.id]">
-            <button @click="goToStory(story.id, progressions[story.id])">▶️ Reprendre</button>
-            <button class="secondary" @click="resetProgression(story.id)">🔁 Recommencer</button>
+          <div v-if="progressions[story.id]" class="button-group">
+            <button class="primary-button" @click="goToStory(story.id, progressions[story.id])">
+              ▶️ Reprendre
+            </button>
+            <button class="secondary-button" @click="resetProgression(story.id)">
+              🔁 Recommencer
+            </button>
           </div>
 
-          <button v-else @click="startStory(story.id)">Commencer</button>
+          <button v-else class="start-button" @click="startStory(story.id)">Commencer</button>
         </div>
       </div>
 
@@ -35,6 +41,7 @@ const router = useRouter()
 const stories = ref([])
 const progressions = ref({})
 const userName = ref('')
+const message = ref('')
 
 const fetchUser = async () => {
   const res = await api.get('/api/user')
@@ -54,6 +61,18 @@ const fetchProgressions = async () => {
         progressions.value[story.id] = res.data.chapter_id
       }
     } catch {}
+  }
+}
+
+const logout = async () => {
+  try {
+    await api.get('/sanctum/csrf-cookie')
+    await api.post('/api/logout')
+    message.value = 'Vous êtes déconnecté.'
+    setTimeout(() => router.replace('/login'), 1000)
+  } catch (err) {
+    console.error('Erreur lors de la déconnexion :', err)
+    message.value = 'Erreur de déconnexion.'
   }
 }
 
@@ -84,61 +103,90 @@ onMounted(async () => {
 <style scoped>
 .page-container {
   padding: 1rem;
+  font-family: 'Arial', sans-serif;
+  background-color: #f3f4f6;
 }
 
 .top-bar {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  font-weight: bold;
-  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #1976d2;
+  color: white;
+  border-radius: 8px;
+}
+
+.greeting {
+  font-size: 1.2rem;
+}
+
+.logout {
+  padding: 0.5rem 1rem;
+  background: #e53935;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout:hover {
+  background: #c62828;
 }
 
 .accueil {
-  max-width: 900px;
-  margin: 5rem auto 0;
-  padding: 2rem;
+  margin: 2rem auto;
+  text-align: center;
 }
 
 .story-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
 }
 
 .story-card {
+  background-color: white;
   padding: 1.5rem;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: #f9f9f9;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.story-card h3 {
-  margin: 0 0 0.5rem;
-}
-
-.story-card button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  background: #1976d2;
+.primary-button,
+.start-button {
+  background-color: #4caf50;
   color: white;
+  padding: 0.75rem 1.25rem;
+  border: none;
   border-radius: 6px;
+  margin: 0.5rem 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.primary-button:hover,
+.start-button:hover {
+  transform: scale(1.05);
+}
+
+.secondary-button {
+  background-color: #ffb310;
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  margin-left: 0.5rem;
   cursor: pointer;
 }
 
-.story-card button:hover {
-  background: #0f5bb5;
+.secondary-button:hover {
+  background-color: #e58f00;
 }
 
-.story-card button.secondary {
-  margin-left: 0.5rem;
-  background-color: #e0e0e0;
-  color: #333;
-}
-
-.story-card button.secondary:hover {
-  background-color: #ccc;
+.logout-message {
+  margin-top: 0.5rem;
+  color: #4caf50;
 }
 </style>

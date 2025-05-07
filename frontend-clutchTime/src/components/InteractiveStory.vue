@@ -1,7 +1,7 @@
 <template>
   <div class="story-wrapper">
     <div class="top-bar">
-      <div class="greeting">👋 Hello, {{ userName }}</div>
+      <div class="greeting">👋 Bonjour, {{ userName }}</div>
       <div class="top-right">
         <div class="progress-circle">
           <svg viewBox="0 0 36 36">
@@ -18,8 +18,6 @@
           </svg>
         </div>
         <button class="home" @click="goHome">🏠 Accueil</button>
-        <button @click="logout" class="logout">Logout</button>
-        <p v-if="message" class="logout-message">{{ message }}</p>
       </div>
     </div>
 
@@ -41,8 +39,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import api from '@/axios'
 import { useRoute, useRouter } from 'vue-router'
+import api from '@/axios'
 
 const router = useRouter()
 const route = useRoute()
@@ -50,14 +48,17 @@ const route = useRoute()
 const chapter = ref({ title: '', content: '', choices: [], story_id: null })
 const userName = ref('')
 const progress = ref(0)
-const message = ref('')
 
 const storyId = route.query.story || 1
 const chapterId = route.query.chapter || null
 
 const fetchUser = async () => {
-  const res = await api.get('/api/user')
-  userName.value = res.data.name
+  try {
+    const res = await api.get('/api/user')
+    userName.value = res.data.name
+  } catch (err) {
+    console.error("Erreur lors de la récupération de l'utilisateur :", err)
+  }
 }
 
 const fetchChapter = async (id = 1) => {
@@ -71,15 +72,11 @@ const fetchChapter = async (id = 1) => {
 
 const selectChoice = async (nextId) => {
   try {
-    if (!nextId) throw new Error('nextId est undefined')
-
+    if (!nextId) throw new Error("L'ID du chapitre suivant est indéfini")
     const res = await api.get(`/api/v1/chapters/${nextId}`)
     chapter.value = res.data
 
-    // 🔐 Obtenir le cookie CSRF (à faire au moins une fois par session)
     await api.get('/sanctum/csrf-cookie')
-
-    // 💾 Sauvegarde la progression
     await api.post('/api/v1/progressions', {
       story_id: chapter.value.story_id,
       chapter_id: chapter.value.id,
@@ -87,19 +84,7 @@ const selectChoice = async (nextId) => {
 
     progress.value = Math.min(progress.value + 10, 100)
   } catch (err) {
-    console.error('Erreur lors de la sélection :', err)
-  }
-}
-
-const logout = async () => {
-  try {
-    await api.get('/sanctum/csrf-cookie')
-    await api.post('/api/logout')
-    message.value = 'Vous êtes déconnecté.'
-    setTimeout(() => router.replace('/login'), 1000)
-  } catch (err) {
-    console.error('Erreur lors de la déconnexion :', err)
-    message.value = 'Erreur de déconnexion.'
+    console.error('Erreur lors de la sélection du choix :', err)
   }
 }
 
@@ -155,25 +140,13 @@ onMounted(async () => {
   gap: 1rem;
 }
 
-.logout,
 .home {
   padding: 0.5rem 1rem;
+  background: #1976d2;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-
-.logout {
-  background: #e53935;
-}
-
-.logout:hover {
-  background: #c62828;
-}
-
-.home {
-  background: #1976d2;
 }
 
 .home:hover {
@@ -232,8 +205,7 @@ svg {
   cursor: pointer;
 }
 
-.logout-message {
-  color: #4caf50;
-  font-weight: bold;
+.choices button:hover {
+  background: #e58f00;
 }
 </style>
