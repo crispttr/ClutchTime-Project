@@ -3,18 +3,21 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Story;
 use App\Models\Chapter;
+use App\Models\Choice;
 
 class ChapterSeeder extends Seeder
 {
     public function run(): void
     {
         Chapter::insert([
+            // Phase 1 : Début de carrière
             [
                 'id' => 1,
                 'story_id' => 1,
                 'title' => 'Premier match pro',
-                'content' => 'C’est ton premier match. Coach hésite à te titulariser.',
+                'content' => 'C\'est ton premier match. Coach hésite à te titulariser. Les recruteurs sont présents, la pression est immense.',
                 'is_start' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -22,8 +25,8 @@ class ChapterSeeder extends Seeder
             [
                 'id' => 2,
                 'story_id' => 1,
-                'title' => 'Tu débutes sur le banc',
-                'content' => 'Tu observes, analyses, puis entres à la mi-temps.',
+                'title' => 'Sur le banc',
+                'content' => 'Tu débutes sur le banc. Tu analyses le jeu et te prépares mentalement à entrer. Au milieu du deuxième quart-temps, coach t\'appelle enfin.',
                 'is_start' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -31,8 +34,8 @@ class ChapterSeeder extends Seeder
             [
                 'id' => 3,
                 'story_id' => 1,
-                'title' => 'Tu es titularisé',
-                'content' => 'La pression monte, tu as le ballon dès le début.',
+                'title' => 'Titulaire',
+                'content' => 'Tu es titulaire ! La foule applaudit. Tu prends la balle pour la première possession. L\'adrénaline monte.',
                 'is_start' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -40,8 +43,8 @@ class ChapterSeeder extends Seeder
             [
                 'id' => 4,
                 'story_id' => 1,
-                'title' => 'Tu forces un tir',
-                'content' => 'Le tir est raté... Le coach te sort du match.',
+                'title' => 'Le tir risqué',
+                'content' => 'Tu prends un tir difficile, mais tu te rates. L\'équipe est en difficulté et le coach te regarde sévèrement.',
                 'is_start' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -49,8 +52,146 @@ class ChapterSeeder extends Seeder
             [
                 'id' => 5,
                 'story_id' => 1,
-                'title' => 'Tu passes à ton ailier',
-                'content' => 'Passe décisive. Tu gagnes la confiance de l’équipe.',
+                'title' => 'La passe décisive',
+                'content' => 'Ton ailier marque après ta passe. Coach te félicite pour ta vision de jeu. L\'équipe commence à te faire confiance.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // Phase 2 : Progression et choix
+            [
+                'id' => 6,
+                'story_id' => 1,
+                'title' => 'Remonter la pente',
+                'content' => 'Après ton erreur, tu redoubles d\'efforts. Une occasion se présente pour un contre-attaque.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 7,
+                'story_id' => 1,
+                'title' => 'Momentum favorable',
+                'content' => 'L\'équipe a le vent en poupe grâce à ta passe décisive. Le meneur adverse semble vulnérable.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 8,
+                'story_id' => 1,
+                'title' => 'Tentative de dunk',
+                'content' => 'Tu t\'élances pour un dunk spectaculaire qui pourrait galvaniser l\'équipe, mais c\'est risqué.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 9,
+                'story_id' => 1,
+                'title' => 'Vol de balle',
+                'content' => 'Tu interceptes une passe adverse et te retrouves seul face au panier.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 10,
+                'story_id' => 1,
+                'title' => 'Dunk réussi',
+                'content' => 'Ton dunk fait exploser la salle ! Les supporters scandent ton nom, les réseaux sociaux s\'enflamment.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // Phase 3 : Repérage et propositions
+            [
+                'id' => 11,
+                'story_id' => 1,
+                'title' => 'L\'échec',
+                'content' => 'Tu rates ton dunk et te blesses légèrement. Le coach te sort du terrain, frustré par ta prise de risque.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 12,
+                'story_id' => 1,
+                'title' => 'Fin de match victorieuse',
+                'content' => 'Ton équipe remporte le match. Un recruteur NBA et un agent européen t\'attendent en coulisses.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 13,
+                'story_id' => 1,
+                'title' => 'Proposition NBA',
+                'content' => 'Le recruteur NBA te propose un essai dans une franchise de second plan, avec la possibilité d\'intégrer l\'équipe principale.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 14,
+                'story_id' => 1,
+                'title' => 'Proposition Euroligue',
+                'content' => 'L\'agent européen t\'offre un contrat dans un club d\'Euroligue, avec un temps de jeu garanti et un salaire confortable.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 15,
+                'story_id' => 1,
+                'title' => 'Retour à l\'entraînement',
+                'content' => 'Tu retournes t\'entraîner, déterminé à prouver ta valeur malgré ton échec. Un match amical approche.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // Phase 4 : Développement de carrière
+            [
+                'id' => 16,
+                'story_id' => 1,
+                'title' => 'Entrée en NBA',
+                'content' => 'Tu signes pour la G-League avec l\'espoir d\'être appelé en NBA. L\'adaptation est difficile, la concurrence féroce.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 17,
+                'story_id' => 1,
+                'title' => 'Carrière européenne',
+                'content' => 'Tu t\'envoles pour l\'Europe. Le style de jeu est différent, plus tactique, et tu dois t\'adapter rapidement.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 18,
+                'story_id' => 1,
+                'title' => 'La blessure',
+                'content' => 'Durant un entraînement intensif, tu ressens une douleur à la cheville. Le médecin est inquiet.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 19,
+                'story_id' => 1,
+                'title' => 'La percée en G-League',
+                'content' => 'Après des mois d\'efforts, tu deviens une star de G-League. Un coach NBA t\'appelle pour un contrat de 10 jours.',
+                'is_start' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 20,
+                'story_id' => 1,
+                'title' => 'Star d\'Euroligue',
+                'content' => 'Tu es devenu un joueur majeur en Europe. Ton équipe dispute la finale d\'Euroligue et des franchises NBA te suivent de près.',
                 'is_start' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
