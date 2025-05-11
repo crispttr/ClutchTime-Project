@@ -9,15 +9,18 @@ class Story extends Model
 {
     use HasFactory;
 
+    // Les champs qu'on peut remplir directement
     protected $fillable = ['title', 'description'];
 
+    // Relation : Une histoire peut avoir plusieurs chapitres
     public function chapters()
     {
         return $this->hasMany(Chapter::class);
     }
-    public function progressions()
-{
-    return $this->hasMany(UserProgress::class);
-}
 
+    // Relation : Une histoire peut avoir plusieurs progressions (par utilisateur)
+    public function progressions()
+    {
+        return $this->hasMany(UserProgress::class);
+    }
 }
