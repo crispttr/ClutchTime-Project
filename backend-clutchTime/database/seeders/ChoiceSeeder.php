@@ -80,15 +80,20 @@ class ChoiceSeeder extends Seeder
             
             // Choix du chapitre 18
             ['chapter_id' => 18, 'text' => 'Suivre scrupuleusement la rééducation', 'next_chapter_id' => 15, 'created_at' => now(), 'updated_at' => now()],
-            ['chapter_id' => 18, 'text' => 'Accélérer le retour malgré les risques', 'next_chapter_id' => 11, 'created_at' => now(), 'updated_at' => now()],
+            ['chapter_id' => 18, 'text' => 'Accélérer le retour malgré les risques', 'next_chapter_id' => 23, 'created_at' => now(), 'updated_at' => now()], // Modification: mène à la fin "Reconversion"
             
             // Choix du chapitre 19
-            ['chapter_id' => 19, 'text' => 'Saisir l\'opportunité NBA', 'next_chapter_id' => 16, 'created_at' => now(), 'updated_at' => now()],
+            ['chapter_id' => 19, 'text' => 'Saisir l\'opportunité NBA', 'next_chapter_id' => 22, 'created_at' => now(), 'updated_at' => now()], // Modification: mène à la fin "Star NBA"
             ['chapter_id' => 19, 'text' => 'Rester en G-League pour progresser', 'next_chapter_id' => 18, 'created_at' => now(), 'updated_at' => now()],
             
             // Choix du chapitre 20
-            ['chapter_id' => 20, 'text' => 'Rester fidèle à ton club européen', 'next_chapter_id' => 17, 'created_at' => now(), 'updated_at' => now()],
+            ['chapter_id' => 20, 'text' => 'Rester fidèle à ton club européen', 'next_chapter_id' => 21, 'created_at' => now(), 'updated_at' => now()], // Modification: mène à la fin "Légende de l'Euroligue"
             ['chapter_id' => 20, 'text' => 'Tenter ta chance en NBA', 'next_chapter_id' => 16, 'created_at' => now(), 'updated_at' => now()],
+            
+            // Nouveaux choix pour s'assurer que toutes les fins sont accessibles
+            ['chapter_id' => 16, 'text' => 'Persévérer malgré les difficultés', 'next_chapter_id' => 22, 'created_at' => now(), 'updated_at' => now()], // Nouvelle option vers "Star NBA"
+            ['chapter_id' => 17, 'text' => 'S\'engager totalement dans ta carrière européenne', 'next_chapter_id' => 21, 'created_at' => now(), 'updated_at' => now()], // Nouvelle option vers "Légende de l'Euroligue"
+            ['chapter_id' => 15, 'text' => 'Réévaluer tes objectifs de carrière', 'next_chapter_id' => 23, 'created_at' => now(), 'updated_at' => now()], // Nouvelle option vers "Reconversion"
         ]);
     }
 }

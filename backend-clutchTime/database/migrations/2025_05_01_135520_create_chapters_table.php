@@ -9,14 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+ public function up()
 {
     Schema::create('chapters', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('story_id')->constrained()->onDelete('cascade');
+        $table->foreignId('story_id');
         $table->string('title');
-        $table->text('content'); // ✅ ajouter cette ligne
+        $table->text('content');
         $table->boolean('is_start')->default(false);
+        $table->boolean('is_end')->default(false);   // Ajouté
+        $table->string('ending_type')->nullable();   // Ajouté
         $table->timestamps();
     });
 }
