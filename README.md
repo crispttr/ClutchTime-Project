@@ -20,7 +20,7 @@ Le choix d'un projet Basket pour cette application permet d'illustrer l'importan
 
 * Backend : Laravel 10.x
 * Frontend : Vue.js 3.x
-* Base de données : MySQL / PostgreSQL / SQLite
+* Base de données : SQLite
 * API : RESTful versionnée
 * Authentification : Laravel Sanctum
 * Contrôle de version : Git (GitHub)
