@@ -148,6 +148,6 @@ Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus d'informations
 
 ## Auteur ✨
 
-* Cristian Pottier - Étudiant HEIG-VD - Classe 52/21
+* Cristian Pottier - Étudiant HEIG-VD - Classe 52/2
 
 Pour toute question, contactez-moi via l'issue tracker ou par email.
