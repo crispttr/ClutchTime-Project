@@ -18,6 +18,10 @@
     <div v-if="errors.length" class="error-messages">
       <p v-for="(error, index) in errors" :key="index" class="error">{{ error }}</p>
     </div>
+    <p class="login-link">
+      Déjà inscrit ?
+      <a @click.prevent="goToLogin" href="#">Se connecter</a>
+    </p>
   </div>
 </template>
 
@@ -65,6 +69,10 @@ const register = async () => {
     }
   }
 }
+
+const goToLogin = () => {
+  router.push('/login')
+}
 </script>
 
 <style scoped>
@@ -90,5 +98,18 @@ button {
 .error {
   margin: 4px 0;
   font-weight: bold;
+}
+.login-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+.login-link a {
+  color: #1976d2;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.login-link a:hover {
+  color: #125ca1;
 }
 </style>

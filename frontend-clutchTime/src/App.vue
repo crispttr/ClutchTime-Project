@@ -1,42 +1,21 @@
 <template>
   <div id="app">
-    <router-view />
+    <Header v-if="authStore.isAuthenticated" />
+    <div class="main-content">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import api from '@/axios'
+import { onMounted } from 'vue'
+import { useAuthStore } from './store/auth'
+import Header from './components/layout/Header.vue'
 
-const router = useRouter()
-const isAuthenticated = ref(false)
-
-const checkAuth = async () => {
-  try {
-    const res = await api.get('/api/user')
-    if (res.data && res.data.name) {
-      isAuthenticated.value = true
-      if (router.currentRoute.value.path === '/login') {
-        router.push('/home')
-      }
-    } else {
-      isAuthenticated.value = false
-      if (router.currentRoute.value.path !== '/login') {
-        router.push('/login')
-      }
-    }
-  } catch (err) {
-    console.error("Erreur de vérification de l'authentification :", err)
-    isAuthenticated.value = false
-    if (router.currentRoute.value.path !== '/login') {
-      router.push('/login')
-    }
-  }
-}
+const authStore = useAuthStore()
 
 onMounted(() => {
-  checkAuth()
+  authStore.checkAuth()
 })
 </script>
 
@@ -45,16 +24,20 @@ body {
   margin: 0;
   font-family: 'Arial', sans-serif;
   background-color: #f5f5f5;
-  background-image: './fond.avif';
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
 }
 
 #app {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.main-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 </style>
