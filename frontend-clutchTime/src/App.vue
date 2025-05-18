@@ -39,5 +39,7 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  padding-top: 4.2rem; /* Compense la hauteur du header fixe */
+  box-sizing: border-box;
 }
 </style>

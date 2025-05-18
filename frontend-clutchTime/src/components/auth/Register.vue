@@ -60,7 +60,7 @@ const register = async () => {
         headers: { 'X-XSRF-TOKEN': token },
       },
     )
-    router.push('/story')
+    router.push('/accueil')
   } catch (err) {
     if (err.response && err.response.data.errors) {
       errors.value = Object.values(err.response.data.errors).flat()

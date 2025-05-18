@@ -74,20 +74,32 @@ onMounted(async () => {
 
 .accueil-bar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: 1rem;
   padding: 0 1rem;
+  max-width: 220px;
 }
 
 .home {
-  padding: 0.5rem 1rem;
+  padding: 0.32rem 0.6rem 0.32rem 0.45rem;
   background: #1976d2;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18rem;
+  white-space: nowrap;
   transition: background 0.2s;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  width: auto;
+  max-width: 200px;
 }
 .home:hover {
   background: #125ca1;

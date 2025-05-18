@@ -102,13 +102,13 @@ onMounted(async () => {
 
 <style scoped>
 .page-container {
-  padding: 1.5rem 0 2rem 0;
+  padding: 4.5rem 0 2rem 0; /* Ajouter un espace pour le header fixe */
   font-family: 'Arial', sans-serif;
   background-color: #f8f5ea;
   min-height: 100vh;
-  max-width: 700px;
-  margin: 0 auto;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title {
@@ -118,7 +118,7 @@ onMounted(async () => {
 }
 
 .content-wrapper {
-  max-width: 600px;
+  max-width: 700px; /* ✅ Limiter la largeur du contenu */
   margin: 0 auto;
   width: 100%;
 }
@@ -126,20 +126,24 @@ onMounted(async () => {
 .story-list {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
+  align-items: center; /* ✅ Centrer les cartes */
 }
 
 .story-card {
   background: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border-radius: 12px;
-  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   transition:
     box-shadow 0.2s,
     transform 0.2s;
+  max-width: 600px; /* ✅ Réduire la largeur des cartes */
+  width: 100%;
+  margin: 0 auto;
 }
 
 .story-card:hover {
@@ -147,27 +151,8 @@ onMounted(async () => {
   transform: translateY(-4px) scale(1.02);
 }
 
-.story-content {
-  flex: 1 1 auto;
-  margin-bottom: 1.2rem;
-}
-
-.story-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #1976d2;
-}
-
-.story-description {
-  font-size: 1rem;
-  color: #444;
-  margin-bottom: 0.5rem;
-}
-
 .story-actions {
   display: flex;
-  flex-wrap: wrap;
   gap: 0.7rem;
   justify-content: flex-end;
 }
@@ -176,31 +161,26 @@ onMounted(async () => {
 .start-button {
   background-color: #4caf50;
   color: white;
-  padding: 0.6rem 1.1rem;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
-  transition:
-    transform 0.2s,
-    background 0.2s;
 }
 
 .primary-button:hover,
 .start-button:hover {
-  transform: scale(1.05);
   background-color: #388e3c;
 }
 
 .secondary-button {
   background-color: #ffb310;
   color: white;
-  padding: 0.6rem 1.1rem;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
 .secondary-button:hover {
@@ -212,48 +192,5 @@ onMounted(async () => {
   color: #888;
   font-size: 1.1rem;
   margin-top: 2rem;
-}
-
-@media (max-width: 700px) {
-  .page-container {
-    padding: 1rem 0 2rem 0;
-  }
-
-  .title {
-    font-size: 1.3rem;
-    margin-bottom: 1.2rem;
-  }
-
-  .content-wrapper {
-    max-width: 100%;
-    padding: 0 0.2rem;
-  }
-
-  .story-list {
-    gap: 1rem;
-  }
-
-  .story-card {
-    padding: 1rem;
-  }
-
-  .story-title {
-    font-size: 1.1rem;
-  }
-
-  .story-description {
-    font-size: 0.95rem;
-  }
-
-  .story-actions {
-    gap: 0.4rem;
-  }
-
-  .primary-button,
-  .start-button,
-  .secondary-button {
-    font-size: 0.97rem;
-    padding: 0.5rem 0.7rem;
-  }
 }
 </style>

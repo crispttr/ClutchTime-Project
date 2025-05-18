@@ -15,15 +15,14 @@ html {
   line-height: 1.6;
 }
 
+/* Application root */
 #app {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%; /* Prendre toute la largeur */
 }
 
-/* Header */
-.header {
+/* Header - Ajustement pour éviter les conflits */
+header.global-header {
   background-color: #62a8e5;
   color: white;
   padding: 1rem;
@@ -33,11 +32,11 @@ html {
   width: 100%;
 }
 
-.header .username {
+header.global-header .username {
   font-weight: bold;
 }
 
-.header button {
+header.global-header button {
   background-color: #ff8c42;
   color: white;
   padding: 0.5rem 1rem;
@@ -46,7 +45,7 @@ html {
   cursor: pointer;
 }
 
-.header button:hover {
+header.global-header button:hover {
   opacity: 0.9;
 }
 
@@ -83,7 +82,7 @@ button:hover {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .header {
+  header.global-header {
     flex-direction: column;
     gap: 0.5rem;
   }
