@@ -14,9 +14,11 @@
 
 <script setup>
 import { useAuthStore } from '@/store/auth'
-const authStore = useAuthStore()
+const authStore = useAuthStore() // Initialisation du store d'authentification
 
+// Fonction de déconnexion de l'utilisateur
 const handleLogout = async () => {
+  //
   await authStore.logout()
 }
 </script>

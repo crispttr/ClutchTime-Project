@@ -1,35 +1,48 @@
 <template>
   <div class="page-container">
+    <!-- Titre de la page -->
     <h2 class="title">📚 Histoires disponibles</h2>
+
     <div class="content-wrapper">
+      <!-- Vérification si des histoires sont disponibles -->
       <div v-if="stories.length" class="story-list">
+        <!-- Boucle pour afficher chaque histoire -->
         <div v-for="story in stories" :key="story.id" class="story-card">
+          <!-- Contenu de l'histoire -->
           <div class="story-content">
+            <!-- Vérification de la progression : Affiche le chapitre en cours si disponible -->
             <template v-if="authStore.progressions[story.id] && chapters[story.id]">
               <h3 class="story-title">Chapitre en cours : {{ chapters[story.id].title }}</h3>
               <p class="story-description">{{ chapters[story.id].content }}</p>
             </template>
+            <!-- Sinon, affiche le titre et la description de l'histoire -->
             <template v-else>
               <h3 class="story-title">{{ story.title }}</h3>
               <p class="story-description">{{ story.description }}</p>
             </template>
           </div>
+
+          <!-- Boutons d'action pour chaque histoire -->
           <div class="story-actions">
             <template v-if="authStore.progressions[story.id]">
+              <!-- Bouton pour reprendre l'histoire depuis la progression enregistrée -->
               <button
                 class="primary-button"
                 @click="goToStory(story.id, authStore.progressions[story.id])"
               >
                 ▶️ Reprendre
               </button>
+              <!-- Bouton pour réinitialiser la progression -->
               <button class="secondary-button" @click="resetProgression(story.id)">
                 🔁 Recommencer
               </button>
             </template>
+            <!-- Bouton pour démarrer l'histoire si aucune progression enregistrée -->
             <button v-else class="start-button" @click="startStory(story.id)">Commencer</button>
           </div>
         </div>
       </div>
+      <!-- Message de chargement en cas d'absence d'histoires -->
       <p v-else class="loading">Chargement des histoires...</p>
     </div>
   </div>
@@ -41,12 +54,15 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth'
 import api from '@/axios'
 
+// Initialisation du store d'authentification
 const authStore = useAuthStore()
-const router = useRouter()
-const stories = ref([])
-const message = ref('')
-const chapters = reactive({}) // { [storyId]: { title, content } }
 
+// Variables réactives pour les histoires et les chapitres
+const stories = ref([])
+const chapters = reactive({}) // Stocke les chapitres par ID d'histoire
+const router = useRouter()
+
+// Fonction pour démarrer une histoire depuis le début
 const startStory = (storyId) => {
   try {
     router.push({ path: '/story', query: { story: storyId } })
@@ -55,15 +71,18 @@ const startStory = (storyId) => {
   }
 }
 
+// Fonction pour continuer l'histoire depuis le chapitre sauvegardé
 const goToStory = (storyId, chapterId) => {
   router.push({ path: '/story', query: { story: storyId, chapter: chapterId } })
 }
 
+// Réinitialisation de la progression d'une histoire
 const resetProgression = async (storyId) => {
   await authStore.resetProgression(storyId)
   chapters[storyId] = null
 }
 
+// Récupération d'un chapitre via l'API
 const fetchChapter = async (chapterId, storyId) => {
   try {
     const res = await api.get(`/api/v1/chapters/${chapterId}`)
@@ -76,9 +95,10 @@ const fetchChapter = async (chapterId, storyId) => {
   }
 }
 
+// Récupération de toutes les histoires et de leur progression
 const fetchStories = async () => {
   try {
-    const res = await api.get('/api/v1/stories', { withCredentials: true })
+    const res = await api.get('/api/v1/stories')
     stories.value = res.data
     for (const story of stories.value) {
       await authStore.fetchProgression(story.id)
@@ -94,6 +114,7 @@ const fetchStories = async () => {
   }
 }
 
+// Exécuter la récupération des histoires lors du montage du composant
 onMounted(async () => {
   await authStore.checkAuth()
   await fetchStories()

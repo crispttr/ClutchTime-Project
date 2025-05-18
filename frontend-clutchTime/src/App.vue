@@ -1,6 +1,9 @@
 <template>
   <div id="app">
+    <!-- ✅ Affiche le header seulement si l'utilisateur est authentifié -->
     <Header v-if="authStore.isAuthenticated" />
+
+    <!-- ✅ Zone principale de contenu avec affichage des pages -->
     <div class="main-content">
       <router-view />
     </div>
@@ -12,8 +15,10 @@ import { onMounted } from 'vue'
 import { useAuthStore } from './store/auth'
 import Header from './components/layout/Header.vue'
 
+// Initialisation du store d'authentification
 const authStore = useAuthStore()
 
+// Vérifie l'authentification dès que l'application est montée
 onMounted(() => {
   authStore.checkAuth()
 })

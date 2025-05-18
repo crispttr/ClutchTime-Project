@@ -1,20 +1,27 @@
 <template>
   <div class="story-wrapper">
+    <!-- Barre d'accueil avec un bouton pour revenir à la page d'accueil -->
     <div class="accueil-bar">
+      <!-- Bouton Accueil pour revenir à la liste des histoires -->
       <button class="home" @click="goHome">🏠 Accueil</button>
     </div>
 
     <div class="story-content">
+      <!-- Affichage du titre du chapitre en cours -->
       <h2 class="story-title">{{ chapter.title }}</h2>
+      <!-- Affichage du contenu du chapitre en cours -->
       <p class="story-text">{{ chapter.content }}</p>
 
+      <!-- Liste des choix proposés pour continuer l'histoire -->
       <div class="choices">
+        <!-- Boucle pour afficher chaque choix de manière dynamique -->
         <button
           v-for="choice in chapter.choices"
           :key="choice.id"
           class="choice-button"
           @click="selectChoice(choice.next_chapter_id)"
         >
+          <!-- Texte du choix à afficher dans le bouton -->
           {{ choice.text }}
         </button>
       </div>
@@ -28,20 +35,28 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth'
 import api from '@/axios'
 
+// Initialisation du store d'authentification pour gérer les données utilisateur
 const authStore = useAuthStore()
+
+// Initialisation du routeur pour la navigation entre les pages
 const router = useRouter()
 const route = useRoute()
 
+// Déclaration d'une variable réactive pour stocker le chapitre courant
 const chapter = ref({ title: '', content: '', choices: [] })
 
+// Fonction pour revenir à la page d'accueil
 const goHome = () => {
   router.push('/accueil')
 }
 
 const fetchChapter = async (id, storyId) => {
   try {
+    // Appel à l'API pour récupérer le chapitre par son ID
     const res = await api.get(`/api/v1/chapters/${id}`, { withCredentials: true })
+    // Mise à jour du contenu du chapitre
     chapter.value = res.data
+    // Sauvegarde automatique de la progression
     await authStore.saveProgression(storyId, id)
   } catch (err) {
     console.error('Erreur lors du chargement du chapitre:', err)

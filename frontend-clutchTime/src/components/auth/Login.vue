@@ -1,12 +1,24 @@
 <template>
   <div class="auth-container">
+    <!-- Titre de la page de connexion -->
     <h2>Connexion</h2>
+
+    <!-- Champ pour saisir l'email -->
     <input v-model="email" type="email" placeholder="Email" />
+
+    <!-- Champ pour saisir le mot de passe -->
     <input v-model="password" type="password" placeholder="Mot de passe" />
+
+    <!-- Bouton pour lancer la connexion -->
     <button @click="handleLogin">Se connecter</button>
+
+    <!-- Affichage du message d'erreur en cas de problème -->
     <p v-if="authStore.error" class="error">{{ authStore.error }}</p>
+
+    <!-- Lien pour aller à la page d'inscription -->
     <p class="register-link">
       Pas encore inscrit ?
+      <!-- Utilisation d'un lien pour naviguer vers la page de registre -->
       <a @click.prevent="goToRegister" href="#">S'inscrire</a>
     </p>
   </div>
@@ -17,18 +29,27 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth'
 
+// Initialisation du store d'authentification
 const authStore = useAuthStore()
+
+// Déclaration des variables pour l'email et le mot de passe
 const email = ref('')
 const password = ref('')
+
+// Initialisation du routeur pour naviguer entre les pages
 const router = useRouter()
 
+// Fonction de gestion de la connexion
 const handleLogin = async () => {
+  // Appel à la fonction login du store avec l'email et le mot de passe saisis
   const success = await authStore.login(email.value, password.value)
+  // Si la connexion est réussie, rediriger vers la page d'accueil
   if (success) {
     router.push('/accueil')
   }
 }
 
+// Fonction pour aller à la page d'inscription
 const goToRegister = () => {
   router.push('/register')
 }
