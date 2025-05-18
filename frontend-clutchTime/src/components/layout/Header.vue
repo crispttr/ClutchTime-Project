@@ -72,7 +72,7 @@ const handleLogout = async () => {
   transition: background-color 0.3s;
   white-space: nowrap;
   min-width: 0;
-  min-height: 0;
+  min-height: 50px;
   height: auto;
   display: inline-flex;
   align-items: center;
@@ -80,7 +80,7 @@ const handleLogout = async () => {
   gap: 0.15rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   margin-left: auto;
-  max-width: 180px;
+  max-width: 200px;
 }
 
 .logout span,

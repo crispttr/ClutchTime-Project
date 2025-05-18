@@ -102,9 +102,9 @@ onMounted(async () => {
 
 <style scoped>
 .page-container {
-  padding: 4.5rem 0 2rem 0; /* Ajouter un espace pour le header fixe */
+  padding: 4.5rem 0 2rem 0;
   font-family: 'Arial', sans-serif;
-  background-color: #f8f5ea;
+  background: linear-gradient(120deg, #f8f5ea 70%, #f0f4ff 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -113,12 +113,15 @@ onMounted(async () => {
 
 .title {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: 2.3rem;
+  margin-bottom: 2.2rem;
+  color: #222;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .content-wrapper {
-  max-width: 700px; /* ✅ Limiter la largeur du contenu */
+  max-width: 700px;
   margin: 0 auto;
   width: 100%;
 }
@@ -126,71 +129,136 @@ onMounted(async () => {
 .story-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  align-items: center; /* ✅ Centrer les cartes */
+  gap: 2rem;
+  align-items: center;
 }
 
 .story-card {
   background: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  padding: 1.5rem;
+  box-shadow:
+    0 8px 32px rgba(25, 118, 210, 0.1),
+    0 1.5px 8px rgba(0, 0, 0, 0.07);
+  border-radius: 18px;
+  padding: 2.1rem 1.5rem 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   transition:
     box-shadow 0.2s,
     transform 0.2s;
-  max-width: 600px; /* ✅ Réduire la largeur des cartes */
+  max-width: 600px;
   width: 100%;
   margin: 0 auto;
 }
 
 .story-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.13);
-  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 12px 36px rgba(25, 118, 210, 0.18),
+    0 2px 12px rgba(0, 0, 0, 0.13);
+  transform: translateY(-4px) scale(1.025);
+}
+
+.story-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  color: #1976d2;
+}
+
+.story-description {
+  font-size: 1.08rem;
+  color: #444;
+  margin-bottom: 0.7rem;
 }
 
 .story-actions {
   display: flex;
-  gap: 0.7rem;
+  gap: 0.8rem;
   justify-content: flex-end;
 }
 
 .primary-button,
 .start-button {
-  background-color: #4caf50;
+  background: linear-gradient(90deg, #4caf50 60%, #1976d2 100%);
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.65rem 1.3rem;
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    transform 0.15s;
 }
-
 .primary-button:hover,
 .start-button:hover {
-  background-color: #388e3c;
+  background: linear-gradient(90deg, #388e3c 60%, #125ca1 100%);
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.13);
+  transform: scale(1.04);
 }
-
 .secondary-button {
-  background-color: #ffb310;
+  background: linear-gradient(90deg, #ffb310 60%, #ff9800 100%);
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.65rem 1.3rem;
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(255, 179, 16, 0.08);
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    transform 0.15s;
 }
-
 .secondary-button:hover {
-  background-color: #e58f00;
+  background: linear-gradient(90deg, #e58f00 60%, #ffb310 100%);
+  box-shadow: 0 4px 16px rgba(255, 179, 16, 0.13);
+  transform: scale(1.04);
 }
-
 .loading {
   text-align: center;
   color: #888;
   font-size: 1.1rem;
   margin-top: 2rem;
+}
+@media (max-width: 700px) {
+  .page-container {
+    padding: 2.5rem 0 1.2rem 0;
+  }
+  .title {
+    font-size: 1.25rem;
+    margin-bottom: 1.2rem;
+  }
+  .content-wrapper {
+    max-width: 100vw;
+    padding: 0 0.2rem;
+  }
+  .story-list {
+    gap: 1rem;
+  }
+  .story-card {
+    padding: 1.1rem 0.5rem 1rem 0.5rem;
+    border-radius: 12px;
+  }
+  .story-title {
+    font-size: 1.08rem;
+  }
+  .story-description {
+    font-size: 0.98rem;
+  }
+  .story-actions {
+    gap: 0.4rem;
+  }
+  .primary-button,
+  .start-button,
+  .secondary-button {
+    font-size: 0.97rem;
+    padding: 0.5rem 0.7rem;
+    border-radius: 6px;
+  }
 }
 </style>
